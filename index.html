@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://cdn.staticfile.org/axios/0.19.2/axios.js"></script>
+  </head>
+  <body>
+    <!-- 文件上传的第一方式，使用form和input上传经典款 -->
+    <!-- 让form的target属性和iframe的name属性一直，可以避免跳到其他页面，刷新全局页面 -->
+    <!-- <form
+      action="http://localhost:8080/upload"
+      enctype="multipart/form-data"
+      method="post"
+      id="upload-files"
+      target="hiddenIframe"
+    >
+      <input type="file" class="form-control-file" name="file" />
+      <input type="submit" value="提交" />
+    </form>
+    <iframe name="hiddenIframe" id="hiddenIframe"></iframe> -->
+
+    <!-- 文件上传的第二种方式 使用Ajax 配合 FormData web api -->
+    <!-- <input type="file" name="file" id="file" />
+    <button id="upload">上传</button>
+    <script>
+      const upload = document.querySelector("#upload");
+      upload.onclick = function () {
+        const file = document.querySelector("#file");
+        console.dir(file);
+        const fileData = file.files[0];
+        var formData = new FormData();
+        formData.append("file", fileData);
+        axios({
+          method: "POST",
+          url: "http://localhost:8080/upload",
+          data: formData,
+        }).then((result) => {
+          console.log(result);
+          debugger;
+        });
+      };
+    </script> -->
+
+    <!-- 文件上传的第三种方式 使用Ajax 配合 FileReader web api -->
+    <input type="file" name="file" id="file" />
+    <button id="upload">上传</button>
+    <script>
+      const upload = document.querySelector("#upload");
+      upload.onclick = function () {
+        const file = document.querySelector("#file");
+        const fileData = file.files[0];
+        var fr = new FileReader();
+        fr.readAsDataURL(fileData);
+        fr.onload = function (event) {
+          var data = event.target.result; //此处获得的data是base64格式的数据
+          console.log(event.target);
+          debugger;
+          axios({
+            method: "POST",
+            url: "http://localhost:8080/upload1",
+            data: data,
+          }).then((result) => {
+            console.log(result);
+            // debugger;
+          });
+        };
+      };
+    </script>
+  </body>
+</html>
